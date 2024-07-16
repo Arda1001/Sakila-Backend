@@ -21,6 +21,10 @@ public class Actor {
         return firstName;
     }
 
+    public Short getId() {
+        return id;
+    }
+
     public String getLastName() {
         return lastName;
     }

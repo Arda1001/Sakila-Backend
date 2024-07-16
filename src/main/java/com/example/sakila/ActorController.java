@@ -10,7 +10,7 @@ import java.util.List;
 public class ActorController {
 
     @Autowired
-    private ActorRepository.ActorRepositoryI actorRepository;
+    private ActorRepository actorRepository;
 
     public List<Actor> readAll() {
         return actorRepository.findAll();
@@ -22,23 +22,10 @@ public class ActorController {
     }
 
     @GetMapping("/actors")
-    public List<Actor> listActorsByName(@RequestParam String name) {
-        return actorRepository.findAllByFirstNameWithQuery(name);
+    public List<Actor> listActorsByName() {
+        return actorRepository.findAll();
     }
 
-    @Data
-    public class ActorInput {
-        private String firstName;
-        private String lastName;
-
-        public String getFirstName() {
-            return firstName;
-        }
-
-        public String getLastName() {
-            return lastName;
-        }
-    }
 
     @PostMapping("/actors")
     public Actor create(@RequestBody ActorInput data) {
@@ -48,11 +35,9 @@ public class ActorController {
         return actorRepository.save(actor);
     }
 
-    public Actor create() {
-        final var actor = new Actor();
-        actor.setFirstName("30");
-        actor.setLastName("BLOGGS");
-        return actorRepository.save(actor);
-    }
+//    @GetMapping("/actors")
+//    public List<Actor> listActorsByName(@RequestParam String name) {
+//        return actorRepository.findAllByFirstNameWithQuery(name);
+//    }
 
 }
