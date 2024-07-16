@@ -1,6 +1,5 @@
 package com.example.sakila;
 
-import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,6 +32,20 @@ public class ActorController {
         actor.setFirstName(data.getFirstName());
         actor.setLastName(data.getLastName());
         return actorRepository.save(actor);
+    }
+
+    @PutMapping("/actors/{id}")
+    public Actor update(@PathVariable Short id, @RequestBody ActorInput data) {
+        Actor actor = actorRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Actor not found with id: " + id));
+        actor.setFirstName(data.getFirstName());
+        actor.setLastName(data.getLastName());
+        return actorRepository.save(actor);
+    }
+
+    @DeleteMapping("/actors/{id}")
+    public void delete(@PathVariable Short id) {
+        actorRepository.findById(id).ifPresent(actorRepository::delete);
     }
 
 //    @GetMapping("/actors")
