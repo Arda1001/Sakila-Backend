@@ -1,9 +1,12 @@
 package com.example.sakila.actor;
 
+import org.springframework.beans.BeanWrapper;
+import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/actors")
@@ -44,14 +47,30 @@ public class ActorController {
         return actorRepository.save(actor);
     }
 
-    @DeleteMapping("/{id}")
-    public void delete(@PathVariable Short id) {
-        actorRepository.findById(id).ifPresent(actorRepository::delete);
+    @PatchMapping("/{id}")
+    public Actor patchActor(@PathVariable Short id, @RequestBody Map<String, Object> updates) {
+        Actor actor = actorRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Actor not found with id: " + id));
+
+        updates.forEach((key, value) -> {
+            switch (key) {
+                case "firstName":
+                    actor.setFirstName((String) value);
+                    break;
+                case "lastName":
+                    actor.setLastName((String) value);
+                    break;
+                default:
+                    throw new IllegalArgumentException("Unknown attribute: " + key);
+            }
+        });
+
+        return actorRepository.save(actor);
     }
 
-//    @GetMapping("/actors")
-//    public List<Actor> listActorsByName(@RequestParam String name) {
-//        return actorRepository.findAllByFirstNameWithQuery(name);
-//    }
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable Short id) {
+        actorRepository.deleteById(id);
+    }
 
 }

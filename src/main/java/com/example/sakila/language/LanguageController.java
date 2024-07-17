@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/languages")
@@ -38,11 +39,26 @@ public class LanguageController {
         return languageRepository.save(language);
     }
 
-    @DeleteMapping("/{id}")
-    public void deleteLanguage(@PathVariable Short id) {
+    @PatchMapping("/{id}")
+    public Language patchLanguage(@PathVariable Short id, @RequestBody Map<String, Object> updates) {
         Language language = languageRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Language not found with id: " + id));
-        languageRepository.delete(language);
+
+        updates.forEach((key, value) -> {
+            if (key.equals("name")) {
+                language.setName((String) value);
+            }
+            else {
+                throw new IllegalArgumentException("Unknown attribute: " + key);
+            }
+        });
+
+        return languageRepository.save(language);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteLanguage(@PathVariable Short id) {
+        languageRepository.deleteById(id);
     }
 }
 
