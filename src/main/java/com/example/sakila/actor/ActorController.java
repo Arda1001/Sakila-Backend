@@ -1,4 +1,4 @@
-package com.example.sakila;
+package com.example.sakila.actor;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequestMapping("/actors")
 public class ActorController {
 
     @Autowired
@@ -15,18 +16,18 @@ public class ActorController {
         return actorRepository.findAll();
     }
 
-    @GetMapping("/actors/{id}")
+    @GetMapping("/{id}")
     public Actor findActor(@PathVariable Short id) {
         return actorRepository.findById(id).get();
     }
 
-    @GetMapping("/actors")
+    @GetMapping
     public List<Actor> listActorsByName() {
         return actorRepository.findAll();
     }
 
 
-    @PostMapping("/actors")
+    @PostMapping
     public Actor create(@RequestBody ActorInput data) {
         final var actor = new Actor();
         actor.setFirstName(data.getFirstName());
@@ -34,7 +35,7 @@ public class ActorController {
         return actorRepository.save(actor);
     }
 
-    @PutMapping("/actors/{id}")
+    @PutMapping("/{id}")
     public Actor update(@PathVariable Short id, @RequestBody ActorInput data) {
         Actor actor = actorRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Actor not found with id: " + id));
@@ -43,7 +44,7 @@ public class ActorController {
         return actorRepository.save(actor);
     }
 
-    @DeleteMapping("/actors/{id}")
+    @DeleteMapping("/{id}")
     public void delete(@PathVariable Short id) {
         actorRepository.findById(id).ifPresent(actorRepository::delete);
     }
