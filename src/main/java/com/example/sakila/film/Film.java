@@ -5,6 +5,9 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Set;
+import java.util.stream.Stream;
+
 
 @Getter
 @Entity
@@ -44,21 +47,24 @@ public class Film {
     private double replacementCost;
 
     @Setter
+    @Enumerated(EnumType.STRING)
+    @Convert(converter = RatingConverter.class)
     @Column(name = "rating")
-    private String rating;
+    private Rating rating;
 
     @Setter
-    @Column(name = "special_features")
-    private String specialFeatures;
+    @Column(name = "special_feature")
+    private Set<String> specialFeatures;
 
+    @Setter
     @ManyToOne
-    @Setter
     @JoinColumn(name = "language_id", nullable = false)
     private Language languageId;
 
-    @ManyToOne
     @Setter
+    @ManyToOne
     @JoinColumn(name = "original_language_id")
     private Language originalLanguageId;
+
 }
 
