@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.Set;
-import java.util.stream.Stream;
 
 
 @Getter
@@ -47,14 +46,14 @@ public class Film {
     private double replacementCost;
 
     @Setter
-    @Enumerated(EnumType.STRING)
     @Convert(converter = RatingConverter.class)
     @Column(name = "rating")
     private Rating rating;
 
     @Setter
-    @Column(name = "special_feature")
-    private Set<String> specialFeatures;
+    @Convert(converter = SpecialFeaturesConverter.class)
+    @Column(name = "special_features")
+    private Set<SpecialFeatures> specialFeatures;
 
     @Setter
     @ManyToOne
