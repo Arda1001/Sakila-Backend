@@ -2,6 +2,7 @@ package com.example.sakila.film;
 
 import com.example.sakila.language.Language;
 import com.example.sakila.language.LanguageRepository;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,15 +32,7 @@ public class FilmController {
     @PostMapping
     public Film createFilm(@RequestBody FilmInput filmInput) {
         Film film = new Film();
-        film.setTitle(filmInput.getTitle());
-        film.setDescription(filmInput.getDescription());
-        film.setReleaseYear(filmInput.getReleaseYear());
-        film.setRentalDuration(filmInput.getRentalDuration());
-        film.setRentalRate(filmInput.getRentalRate());
-        film.setLength(filmInput.getLength());
-        film.setReplacementCost(filmInput.getReplacementCost());
-        film.setRating(filmInput.getRating());
-        film.setSpecialFeatures(filmInput.getSpecialFeatures());
+        BeanUtils.copyProperties(filmInput, film, "languageId", "originalLanguageId");
 
         if (filmInput.getLanguageId() != null) {
             Language language = languageRepository.findById(filmInput.getLanguageId())
@@ -53,6 +46,8 @@ public class FilmController {
             film.setOriginalLanguageId(originalLanguage);
         }
 
+        film.setSpecialFeatures(filmInput.getSpecialFeatures());
+
         return filmRepository.save(film);
     }
 
@@ -61,15 +56,7 @@ public class FilmController {
         Film film = filmRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Film not found with id: " + id));
 
-        film.setTitle(updatedFilmInput.getTitle());
-        film.setDescription(updatedFilmInput.getDescription());
-        film.setReleaseYear(updatedFilmInput.getReleaseYear());
-        film.setRentalDuration(updatedFilmInput.getRentalDuration());
-        film.setRentalRate(updatedFilmInput.getRentalRate());
-        film.setLength(updatedFilmInput.getLength());
-        film.setReplacementCost(updatedFilmInput.getReplacementCost());
-        film.setRating(updatedFilmInput.getRating());
-        film.setSpecialFeatures(updatedFilmInput.getSpecialFeatures());
+        BeanUtils.copyProperties(updatedFilmInput, film, "id", "languageId", "originalLanguageId");
 
         if (updatedFilmInput.getLanguageId() != null) {
             Language language = languageRepository.findById(updatedFilmInput.getLanguageId())
@@ -85,6 +72,8 @@ public class FilmController {
             film.setOriginalLanguageId(null);
         }
 
+        film.setSpecialFeatures(updatedFilmInput.getSpecialFeatures());
+
         return filmRepository.save(film);
     }
 
@@ -95,5 +84,3 @@ public class FilmController {
         filmRepository.delete(film);
     }
 }
-
-
