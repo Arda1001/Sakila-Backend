@@ -1,11 +1,13 @@
 package com.example.sakila.film;
 
+import com.example.sakila.ValidationGroup;
 import com.example.sakila.language.Language;
 import com.example.sakila.language.LanguageRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
@@ -24,7 +26,7 @@ public class FilmController {
 
 
     @PostMapping
-    public Film createFilm(@RequestBody FilmInput filmInput) {
+    public Film createFilm(@Validated(ValidationGroup.Create.class) @RequestBody FilmInput filmInput) {
         Film film = new Film();
         BeanUtils.copyProperties(filmInput, film, "languageId", "originalLanguageId");
 
@@ -46,7 +48,7 @@ public class FilmController {
     }
 
     @PutMapping("/{id}")
-    public Film updateFilm(@PathVariable Short id, @RequestBody FilmInput updatedFilmInput) {
+    public Film updateFilm(@Validated(ValidationGroup.Update.class)@PathVariable Short id, @RequestBody FilmInput updatedFilmInput) {
         Film film = filmRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Film not found with id: " + id));
 
@@ -73,7 +75,7 @@ public class FilmController {
     }
 
     @PatchMapping("/{id}")
-    public Film patchFilm(@PathVariable Short id, @RequestBody Map<String, Object> updates) {
+    public Film patchFilm(@Validated(ValidationGroup.Update.class)@PathVariable Short id, @RequestBody Map<String, Object> updates) {
         Film film = filmRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Film not found with id: " + id));
 

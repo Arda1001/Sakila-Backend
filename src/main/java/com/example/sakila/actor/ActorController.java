@@ -1,5 +1,6 @@
 package com.example.sakila.actor;
 
+import com.example.sakila.ValidationGroup;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +20,7 @@ public class ActorController {
     }
 
     @PostMapping
-    public Actor create(@Validated @RequestBody ActorInput data) {
+    public Actor create(@Validated(ValidationGroup.Create.class) @RequestBody ActorInput data) {
         final var actor = new Actor();
         actor.setFirstName(data.getFirstName());
         actor.setLastName(data.getLastName());
@@ -27,7 +28,7 @@ public class ActorController {
     }
 
     @PutMapping("/{id}")
-    public Actor update(@PathVariable Short id, @RequestBody ActorInput data) {
+    public Actor update(@Validated(ValidationGroup.Update.class)@PathVariable Short id, @RequestBody ActorInput data) {
         Actor actor = actorRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Actor not found with id: " + id));
         actor.setFirstName(data.getFirstName());
@@ -36,7 +37,7 @@ public class ActorController {
     }
 
     @PatchMapping("/{id}")
-    public Actor patchActor(@PathVariable Short id, @RequestBody Map<String, Object> updates) {
+    public Actor patchActor(@Validated(ValidationGroup.Update.class)@PathVariable Short id, @RequestBody Map<String, Object> updates) {
         Actor actor = actorRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Actor not found with id: " + id));
 
