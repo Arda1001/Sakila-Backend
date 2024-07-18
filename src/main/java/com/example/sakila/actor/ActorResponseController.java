@@ -2,10 +2,7 @@ package com.example.sakila.actor;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
@@ -15,20 +12,17 @@ import java.util.List;
 public class ActorResponseController {
 
     @Autowired
-    private ActorRepository actorRepository;
+    private ActorService actorService;
 
     @GetMapping
+    @ResponseStatus(HttpStatus.OK)
     public List<ActorResponse> readAllActors() {
-        return actorRepository.findAll()
-                .stream()
-                .map(ActorResponse::new)
-                .toList();
+        return actorService.readAllActors();
     }
 
     @GetMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
     public ActorResponse readActorById(@PathVariable Short id) {
-        return actorRepository.findById(id)
-                .map(ActorResponse::new)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        return actorService.readActorById(id);
     }
 }
