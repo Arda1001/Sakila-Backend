@@ -13,6 +13,7 @@ import java.util.Map;
 @Service
 @Transactional
 public class ActorService {
+
     @Autowired
     private ActorRepository actorRepository;
 
@@ -28,6 +29,7 @@ public class ActorService {
                 .map(ActorResponse::new)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
+
     public Actor createActor(ActorInput data){
         final var actor = new Actor();
         actor.setFirstName(data.getFirstName());
