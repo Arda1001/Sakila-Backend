@@ -1,6 +1,7 @@
 package com.example.sakila.language;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -11,54 +12,42 @@ import java.util.Map;
 public class LanguageController {
 
     @Autowired
-    private LanguageRepository languageRepository;
+    private LanguageService languageService;
 
     @GetMapping
-    public List<Language> getAllLanguages() {
-        return languageRepository.findAll();
+    @ResponseStatus(HttpStatus.OK)
+    public List<Language> readAllLanguages() {
+        return languageService.readAllLanguages();
     }
 
     @GetMapping("/{id}")
-    public Language getLanguageById(@PathVariable Short id) {
-        return languageRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Language not found with id: " + id));
+    @ResponseStatus(HttpStatus.OK)
+    public Language readLanguageById(@PathVariable Short id) {
+        return languageService.readlanguageById(id);
     }
 
     @PostMapping
-    public Language createLanguage(@RequestBody LanguageInput languageInput) {
-        Language language = new Language();
-        language.setName(languageInput.getName());
-        return languageRepository.save(language);
+    @ResponseStatus(HttpStatus.CREATED)
+    public Language createLanguage(@RequestBody LanguageInput data) {
+        return languageService.createLanguage(data);
     }
 
     @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
     public Language updateLanguage(@PathVariable Short id, @RequestBody LanguageInput updatedLanguageInput) {
-        Language language = languageRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Language not found with id: " + id));
-        language.setName(updatedLanguageInput.getName());
-        return languageRepository.save(language);
+        return languageService.updateLanguage(id, updatedLanguageInput);
     }
 
     @PatchMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
     public Language patchLanguage(@PathVariable Short id, @RequestBody Map<String, Object> updates) {
-        Language language = languageRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Language not found with id: " + id));
-
-        updates.forEach((key, value) -> {
-            if (key.equals("name")) {
-                language.setName((String) value);
-            }
-            else {
-                throw new IllegalArgumentException("Unknown attribute: " + key);
-            }
-        });
-
-        return languageRepository.save(language);
+        return languageService.patchLanguage(id, updates);
     }
 
     @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteLanguage(@PathVariable Short id) {
-        languageRepository.deleteById(id);
+        languageService.deleteLanguage(id);
     }
 }
 
