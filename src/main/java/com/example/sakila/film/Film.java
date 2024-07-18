@@ -1,5 +1,6 @@
 package com.example.sakila.film;
 
+import com.example.sakila.actor.Actor;
 import com.example.sakila.language.Language;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -64,6 +65,9 @@ public class Film {
     @ManyToOne
     @JoinColumn(name = "original_language_id")
     private Language originalLanguageId;
+
+    @ManyToMany(mappedBy = "films")
+    private Set<Actor> actors;
 
 }
 

@@ -3,6 +3,7 @@ package com.example.sakila.actor;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,19 +20,8 @@ public class ActorController {
         return actorRepository.findAll();
     }
 
-    @GetMapping("/{id}")
-    public Actor findActor(@PathVariable Short id) {
-        return actorRepository.findById(id).get();
-    }
-
-    @GetMapping
-    public List<Actor> listActorsByName() {
-        return actorRepository.findAll();
-    }
-
-
     @PostMapping
-    public Actor create(@RequestBody ActorInput data) {
+    public Actor create(@Validated @RequestBody ActorInput data) {
         final var actor = new Actor();
         actor.setFirstName(data.getFirstName());
         actor.setLastName(data.getLastName());

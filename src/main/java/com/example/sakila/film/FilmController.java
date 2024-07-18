@@ -22,16 +22,6 @@ public class FilmController {
     @Autowired
     private LanguageRepository languageRepository;
 
-    @GetMapping
-    public List<Film> getAllFilms() {
-        return filmRepository.findAll();
-    }
-
-    @GetMapping("/{id}")
-    public Film getFilmById(@PathVariable Short id) {
-        return filmRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Film not found with id: " + id));
-    }
 
     @PostMapping
     public Film createFilm(@RequestBody FilmInput filmInput) {
