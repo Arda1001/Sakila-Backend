@@ -6,6 +6,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 
@@ -67,7 +69,7 @@ public class Film {
     private Language originalLanguageId;
 
     @ManyToMany(mappedBy = "films")
-    private Set<Actor> actors;
+    private final List<Actor> cast = new ArrayList<>();
 
 }
 

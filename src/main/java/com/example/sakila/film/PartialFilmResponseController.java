@@ -20,17 +20,17 @@ public class PartialFilmResponseController {
     private FilmRepository filmRepository;
 
     @GetMapping
-    public List<PartialFilmResponse> readAllFilms() {
+    public List<FilmResponse> readAllFilms() {
         return filmRepository.findAll()
                 .stream()
-                .map(PartialFilmResponse::new)
+                .map(FilmResponse::new)
                 .toList();
     }
 
     @GetMapping("/{id}")
-    public PartialFilmResponse readFilmById(@PathVariable Short id) {
+    public FilmResponse readFilmById(@PathVariable Short id) {
         return filmRepository.findById(id)
-                .map(PartialFilmResponse::new)
+                .map(FilmResponse::new)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 }
