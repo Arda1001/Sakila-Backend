@@ -1,5 +1,6 @@
 package com.example.sakila.actor;
 
+import com.example.sakila.film.Film;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -7,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Set;
 import java.util.Map;
 
 
@@ -31,7 +33,7 @@ public class ActorService {
     }
 
     public Actor createActor(ActorInput data){
-        final var actor = new Actor();
+        final var actor = new Actor(data.getId(), data.getFirstName(), data.getLastName(), data.getFilms());
         actor.setFirstName(data.getFirstName());
         actor.setLastName(data.getLastName());
         return actorRepository.save(actor);

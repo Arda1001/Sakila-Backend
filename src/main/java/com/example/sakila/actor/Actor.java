@@ -2,12 +2,13 @@ package com.example.sakila.actor;
 
 import com.example.sakila.film.Film;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.util.Set;
 
-
+@AllArgsConstructor
 @Getter
 @Entity
 @Table(name = "actor")
