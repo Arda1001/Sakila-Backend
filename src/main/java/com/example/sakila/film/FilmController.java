@@ -10,7 +10,7 @@ import java.util.*;
 
 
 @RestController
-@CrossOrigin
+@CrossOrigin(origins = "http://localhost:5173")
 @RequestMapping("/films")
 public class FilmController {
 

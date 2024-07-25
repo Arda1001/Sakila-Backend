@@ -4,11 +4,13 @@ import com.example.sakila.film.Film;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Set;
 
 @AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Entity
 @Table(name = "actor")
