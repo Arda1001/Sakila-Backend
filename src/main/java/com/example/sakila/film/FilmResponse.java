@@ -19,8 +19,8 @@ public class FilmResponse {
     private final double replacementCost;
     private final Rating rating;
     private final Set<SpecialFeatures> specialFeatures;
-    private final Language languageId;
-    private final Language originalLanguageId;
+    private final Language language;
+    private final Language originalLanguage;
     private final List<PartialActorResponse> cast;
 
     public FilmResponse(Film film) {
@@ -34,8 +34,8 @@ public class FilmResponse {
         this.replacementCost = film.getReplacementCost();
         this.rating = film.getRating();
         this.specialFeatures = film.getSpecialFeatures();
-        this.languageId = film.getLanguageId();
-        this.originalLanguageId = film.getOriginalLanguageId();
+        this.language = film.getLanguageId();
+        this.originalLanguage = film.getOriginalLanguageId();
         this.cast = film.getCast().stream().map(PartialActorResponse::new).toList();
     }
 }
