@@ -13,16 +13,11 @@ import java.util.Set;
 
 @Data
 public class ActorInput {
-    @NotNull(groups = {ValidationGroup.Create.class})
-    @Size(min = 1, max = 128)
-    private Short id;
 
     @NotNull(groups = {ValidationGroup.Create.class})
-    @Size(min = 1, max = 45)
     private String firstName;
 
     @NotNull(groups = {ValidationGroup.Create.class})
-    @Size(min = 1, max = 45)
     private String lastName;
 
     private Set<Film> films;

@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -68,8 +69,9 @@ public class Film {
     @JoinColumn(name = "original_language_id")
     private Language originalLanguageId;
 
+    @Setter
     @ManyToMany(mappedBy = "films")
-    private final List<Actor> cast = new ArrayList<>();
+    private Set<Actor> cast = new HashSet<>();
 
 }
 

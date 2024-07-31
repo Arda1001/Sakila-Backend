@@ -37,5 +37,10 @@ public class Actor {
     private Set<Film> films;
 
 
+    public Actor(String firstName, String lastName, Set<Film> films) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.films = films;
+    }
 }
 

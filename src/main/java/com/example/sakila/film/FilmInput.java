@@ -1,10 +1,12 @@
 package com.example.sakila.film;
 
 import com.example.sakila.ValidationGroup;
+import com.example.sakila.actor.Actor;
 import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
 import java.util.Set;
 
 
@@ -32,5 +34,6 @@ public class FilmInput {
     private double replacementCost;
     private Rating rating;
     private Set<SpecialFeatures> specialFeatures;
+    private Set<Short> castIds;
 }
 

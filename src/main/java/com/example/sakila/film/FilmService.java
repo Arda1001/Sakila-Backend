@@ -1,6 +1,7 @@
 package com.example.sakila.film;
 
 
+import com.example.sakila.actor.Actor;
 import com.example.sakila.actor.ActorRepository;
 import com.example.sakila.language.Language;
 import com.example.sakila.language.LanguageRepository;
@@ -28,6 +29,9 @@ public class FilmService {
 
     @Autowired
     private LanguageRepository languageRepository;
+
+    @Autowired
+    private ActorRepository actorRepository;
 
     private FilmInput data;
 
@@ -61,6 +65,14 @@ public class FilmService {
         }
 
         film.setSpecialFeatures(data.getSpecialFeatures());
+
+        if (data.getCastIds() != null && !data.getCastIds().isEmpty()) {
+            Set<Actor> cast = data.getCastIds().stream()
+                    .map(id -> actorRepository.findById(id)
+                            .orElseThrow(() -> new RuntimeException("Actor not found with id: " + id)))
+                    .collect(Collectors.toSet());
+            film.setCast(cast);
+        }
 
         return filmRepository.save(film);
     }
