@@ -74,7 +74,6 @@ public class Film {
             name = "film_actor",
             joinColumns = @JoinColumn(name = "film_id"),
             inverseJoinColumns = @JoinColumn(name = "actor_id"))
-    @JsonManagedReference
     private Set<Actor> cast = new HashSet<>();
 
 }

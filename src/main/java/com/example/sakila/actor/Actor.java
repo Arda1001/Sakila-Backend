@@ -32,7 +32,6 @@ public class Actor {
     private String lastName;
 
     @ManyToMany(mappedBy = "cast")
-    @JsonBackReference
     private Set<Film> films = new HashSet<>();
 
 
