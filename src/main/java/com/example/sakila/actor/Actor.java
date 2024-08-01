@@ -1,12 +1,14 @@
 package com.example.sakila.actor;
 
 import com.example.sakila.film.Film;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @AllArgsConstructor
@@ -29,12 +31,9 @@ public class Actor {
     @Column(name = "last_name")
     private String lastName;
 
-    @ManyToMany
-    @JoinTable(
-            name = "film_actor",
-            joinColumns = @JoinColumn(name = "actor_id"),
-            inverseJoinColumns = @JoinColumn(name = "film_id"))
-    private Set<Film> films;
+    @ManyToMany(mappedBy = "cast")
+    @JsonBackReference
+    private Set<Film> films = new HashSet<>();
 
 
     public Actor(String firstName, String lastName, Set<Film> films) {

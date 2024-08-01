@@ -2,13 +2,12 @@ package com.example.sakila.film;
 
 import com.example.sakila.actor.Actor;
 import com.example.sakila.language.Language;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 
@@ -70,7 +69,12 @@ public class Film {
     private Language originalLanguageId;
 
     @Setter
-    @ManyToMany(mappedBy = "films")
+    @ManyToMany
+    @JoinTable(
+            name = "film_actor",
+            joinColumns = @JoinColumn(name = "film_id"),
+            inverseJoinColumns = @JoinColumn(name = "actor_id"))
+    @JsonManagedReference
     private Set<Actor> cast = new HashSet<>();
 
 }
