@@ -62,7 +62,7 @@ public class ActorService {
             }
         });
 
-        return actorRepository.save(actor);
+        return new PartialActorResponse(actorRepository.save(actor));
     }
 
     public void deleteActor(Short id) {
