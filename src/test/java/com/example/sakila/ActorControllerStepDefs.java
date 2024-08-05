@@ -17,15 +17,15 @@ import static org.mockito.Mockito.*;
 
 public class ActorControllerStepDefs {
 
-    private ActorService mockService;
+    ActorService mockService;
     ActorController controller;
-    private ActorResponseController responseController;
+    ActorResponseController responseController;
 
     ActorResponse actualOutput;
     PartialActorResponse actualOutputPartial;
     ActorInput actorInput;
     List<ActorResponse> actualOutputList;
-    private Exception caughtException;
+    Exception caughtException;
     short currentActorId;
 
     ActorInput invalidActorInput;
@@ -162,6 +162,5 @@ public class ActorControllerStepDefs {
     public void theStatusCodeIs(int statusCode) {
         assertEquals(statusCode, ((ResponseStatusException) caughtException).getStatusCode().value());
     }
-
 
 }

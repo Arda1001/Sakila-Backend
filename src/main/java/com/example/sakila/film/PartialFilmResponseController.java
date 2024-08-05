@@ -1,6 +1,7 @@
 package com.example.sakila.film;
 
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -9,11 +10,12 @@ import java.util.List;
 
 @RestController
 @CrossOrigin
+@RequiredArgsConstructor
 @RequestMapping("/films")
 public class PartialFilmResponseController {
 
     @Autowired
-    private FilmService filmService;
+    private final FilmService filmService;
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)

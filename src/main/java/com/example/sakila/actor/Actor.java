@@ -1,7 +1,6 @@
 package com.example.sakila.actor;
 
 import com.example.sakila.film.Film;
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
