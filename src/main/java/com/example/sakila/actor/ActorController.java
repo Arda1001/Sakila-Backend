@@ -20,19 +20,19 @@ public class ActorController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Actor create(@Validated(ValidationGroup.Create.class) @RequestBody ActorInput data) {
+    public PartialActorResponse create(@Validated(ValidationGroup.Create.class) @RequestBody ActorInput data) {
         return actorService.createActor(data);
     }
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Actor update(@Validated(ValidationGroup.Update.class)@PathVariable Short id, @RequestBody ActorInput data) {
+    public PartialActorResponse update(@Validated(ValidationGroup.Update.class)@PathVariable Short id, @RequestBody ActorInput data) {
         return actorService.updateActor(data, id);
     }
 
     @PatchMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Actor patchActor(@Validated(ValidationGroup.Update.class)@PathVariable Short id, @RequestBody Map<String, Object> updates) {
+    public PartialActorResponse patchActor(@Validated(ValidationGroup.Update.class)@PathVariable Short id, @RequestBody Map<String, Object> updates) {
         return actorService.patchActor(id, updates);
     }
 

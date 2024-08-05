@@ -30,22 +30,22 @@ public class ActorService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
-    public Actor createActor(ActorInput data){
+    public PartialActorResponse createActor(ActorInput data){
         final var actor = new Actor(data.getFirstName(), data.getLastName(), data.getFilms());
         actor.setFirstName(data.getFirstName());
         actor.setLastName(data.getLastName());
-        return actorRepository.save(actor);
+        return new PartialActorResponse(actorRepository.save(actor));
     }
 
-    public Actor updateActor(ActorInput data, Short id) {
+    public PartialActorResponse updateActor(ActorInput data, Short id) {
         Actor actor = actorRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Actor not found with id: " + id));
         actor.setFirstName(data.getFirstName());
         actor.setLastName(data.getLastName());
-        return actorRepository.save(actor);
+        return new PartialActorResponse(actorRepository.save(actor));
     }
 
-    public Actor patchActor(Short id, Map<String, Object> updates) {
+    public PartialActorResponse patchActor(Short id, Map<String, Object> updates) {
         Actor actor = actorRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Actor not found with id: " + id));
 

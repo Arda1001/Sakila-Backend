@@ -69,7 +69,7 @@ class SakilaApplicationTests {
 
 		final var actorInput = new ActorInput();
 		final var expectedActor = new Actor((short) 1, "JOHN", "DOE", Set.of());
-		when(mockService.createActor(any(ActorInput.class))).thenReturn(expectedActor);
+		when(mockService.createActor(any(ActorInput.class))).thenReturn(new PartialActorResponse(expectedActor));
 
 		final var createdActor = actorController.create(actorInput);
 
@@ -89,7 +89,7 @@ class SakilaApplicationTests {
 		actorInput.setLastName("DOE");
 
 		final var expectedActor = new Actor((short) 1, "JANE", "DOE", Set.of());
-		when(mockService.updateActor(any(ActorInput.class), any(Short.class))).thenReturn(expectedActor);
+		when(mockService.updateActor(any(ActorInput.class), any(Short.class))).thenReturn(new PartialActorResponse(expectedActor));
 
 		final var updatedActor = actorController.update((short) 1, actorInput);
 
