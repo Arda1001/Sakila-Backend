@@ -77,12 +77,7 @@ public class FilmControllerStepDefs {
 
     @When("a POST request is made to the films collection")
     public void aPOSTRequestIsMadeToTheFilmsCollection() {
-        try {
-            actualOutputPartial = partialFilmResponseController.createFilm(filmInput);
-        }
-        catch (Exception e) {
-            caughtException = e;
-        }
+
     }
 
     @When("a PUT request is made for a film with ID {short}")
