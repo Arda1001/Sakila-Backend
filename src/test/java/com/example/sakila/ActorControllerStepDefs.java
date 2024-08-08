@@ -1,13 +1,12 @@
 package com.example.sakila;
 
 import com.example.sakila.actor.*;
-import io.cucumber.java.Before;
-import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
+import static com.example.sakila.CommonStepDefs.caughtException;
 
 import java.util.List;
 import java.util.Map;
@@ -17,29 +16,17 @@ import static org.mockito.Mockito.*;
 
 public class ActorControllerStepDefs {
 
-    ActorService mockService;
-    ActorController controller;
-    ActorResponseController responseController;
+     ActorService mockService = mock(ActorService.class);
+     ActorController controller = new ActorController(mockService);
+     ActorResponseController responseController = new ActorResponseController(mockService);
+     ActorInput actorInput = new ActorInput();
+     ActorInput invalidActorInput = new ActorInput();
+     Map<String, Object> validActorUpdates = Map.of("firstName", "JOHN", "lastName", "DOE");
 
-    ActorResponse actualOutput;
-    PartialActorResponse actualOutputPartial;
-    ActorInput actorInput;
-    List<ActorResponse> actualOutputList;
-    Exception caughtException;
-    short currentActorId;
-
-    ActorInput invalidActorInput;
-    Map<String, Object> validActorUpdates;
-
-    @Before
-    public void setup() {
-        mockService = mock(ActorService.class);
-        controller = new ActorController(mockService);
-        responseController = new ActorResponseController(mockService);
-        actorInput = new ActorInput();
-        invalidActorInput = new ActorInput();
-        validActorUpdates = Map.of("firstName", "JOHN", "lastName", "DOE");
-    }
+     ActorResponse actualOutput;
+     PartialActorResponse actualOutputPartial;
+     List<ActorResponse> actualOutputList;
+     short currentActorId;
 
     @Given("an actor exists with ID {short}")
     public void anActorExistsWithID(short actorId) {
@@ -79,16 +66,6 @@ public class ActorControllerStepDefs {
     public void aGETRequestIsMadeToActors(short actorId) {
         try {
             actualOutput = responseController.readActorById(actorId);
-        }
-        catch (Exception ex) {
-            caughtException = ex;
-        }
-    }
-
-    @When("a GET request is made to the actors collection")
-    public void aGETRequestIsMadeToTheActorsCollection() {
-        try {
-            actualOutputList = responseController.readAllActors();
         }
         catch (Exception ex) {
             caughtException = ex;

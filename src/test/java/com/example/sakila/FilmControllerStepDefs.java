@@ -1,49 +1,33 @@
 package com.example.sakila;
 
-import com.example.sakila.actor.PartialActorResponse;
 import com.example.sakila.film.*;
-import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
-
-import java.util.List;
+import static com.example.sakila.CommonStepDefs.caughtException;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 public class FilmControllerStepDefs {
 
-    FilmService mockService;
-    FilmController controller;
-    PartialFilmResponseController partialFilmResponseController;
+    FilmService mockService = mock(FilmService.class);
+    FilmController controller  = new FilmController(mockService);;
+    PartialFilmResponseController partialFilmResponseController = new PartialFilmResponseController(mockService);;
+    FilmInput filmInput = new FilmInput();
+    FilmInput invalidFilmInput = new FilmInput();
+    Map<String, Object> validFilmUpdates = Map.of("title", "New Title");
 
     FilmResponse actualOutput;
     PartialFilmResponse actualOutputPartial;
-    FilmInput filmInput;
-    List<FilmResponse> actualOutputList;
-    Exception caughtException;
     short currentFilmid;
 
-    FilmInput invalidFilmInput;
-    Map<String, Object> validFilmUpdates;
-
-    @Before
-    public void setup() {
-        mockService = mock(FilmService.class);
-        controller = new FilmController(mockService);
-        partialFilmResponseController = new PartialFilmResponseController(mockService);
-        filmInput = new FilmInput();
-        invalidFilmInput = new FilmInput();
-        validFilmUpdates = Map.of("title", "New Title");
-    }
 
     @Given("a film exists with ID {short}")
     public void aFilmExistsWithID(short filmId) {
@@ -56,10 +40,10 @@ public class FilmControllerStepDefs {
 
     @Given("a film does not exist with ID {short}")
     public void aFilmDoesNotExistWithID(short filmId) {
-        doReturn( new ResponseStatusException(HttpStatus.NOT_FOUND)).when(mockService).readFilmById(filmId);
-        doReturn( new ResponseStatusException(HttpStatus.NOT_FOUND)).when(mockService).updateFilm(eq(filmId), any());
-        doReturn( new ResponseStatusException(HttpStatus.NOT_FOUND)).when(mockService).deleteFilm(filmId);
-        doReturn( new ResponseStatusException(HttpStatus.NOT_FOUND)).when(mockService).patchFilm(eq(filmId), any());
+        doThrow( new ResponseStatusException(HttpStatus.NOT_FOUND)).when(mockService).readFilmById(filmId);
+        doThrow( new ResponseStatusException(HttpStatus.NOT_FOUND)).when(mockService).updateFilm(eq(filmId), any());
+        doThrow( new ResponseStatusException(HttpStatus.NOT_FOUND)).when(mockService).deleteFilm(filmId);
+        doThrow( new ResponseStatusException(HttpStatus.NOT_FOUND)).when(mockService).patchFilm(eq(filmId), any());
     }
 
     @Given("a valid FilmInput request body")
@@ -140,5 +124,8 @@ public class FilmControllerStepDefs {
         assertInstanceOf(PartialFilmResponse.class, actualOutputPartial);
     }
 
-
+    @Then("the film is deleted")
+    public void theFilmIsDeleted() {
+        verify(mockService, times(1)).deleteFilm(currentFilmid);
+    }
 }

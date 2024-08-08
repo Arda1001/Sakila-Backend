@@ -57,7 +57,7 @@ Feature: FilmController
   Scenario: A film is deleted
     Given a film exists with ID 42
     When a DELETE request is made for a film with ID 42
-    Then a FilmResponse is returned
+    Then the film is deleted
 
   Scenario: A film could not be deleted
     Given a film does not exist with ID 120

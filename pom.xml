@@ -111,6 +111,9 @@
 						<exclude>**/Language.*</exclude>
 						<exclude>**/Repository.*</exclude>
 						<exclude>**/SakilaApplication.*</exclude>
+						<exclude>**/Input.*</exclude>
+						<exclude>**/Response.*</exclude>
+						<exclude>**/ValidationGroup.*</exclude>
 					</excludes>
 				</configuration>
 				<executions>

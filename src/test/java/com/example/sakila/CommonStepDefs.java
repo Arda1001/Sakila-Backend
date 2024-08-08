@@ -4,11 +4,12 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import org.springframework.web.server.ResponseStatusException;
 
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class CommonStepDefs {
 
-    Exception caughtException;
+    static Exception caughtException;
 
     @Then("a ResponseStatusException is thrown")
     public void aResponseStatusExceptionIsThrown() {
