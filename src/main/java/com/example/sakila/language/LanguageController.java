@@ -21,31 +21,31 @@ public class LanguageController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<Language> readAllLanguages() {
+    public List<LanguageResponse> readAllLanguages() {
         return languageService.readAllLanguages();
     }
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Language readLanguageById(@PathVariable Short id) {
-        return languageService.readlanguageById(id);
+    public LanguageResponse readLanguageById(@PathVariable Short id) {
+        return languageService.readLanguageById(id);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Language createLanguage(@RequestBody LanguageInput data) {
+    public LanguageResponse createLanguage(@RequestBody LanguageInput data) {
         return languageService.createLanguage(data);
     }
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Language updateLanguage(@PathVariable Short id, @RequestBody LanguageInput updatedLanguageInput) {
+    public LanguageResponse updateLanguage(@PathVariable Short id, @RequestBody LanguageInput updatedLanguageInput) {
         return languageService.updateLanguage(id, updatedLanguageInput);
     }
 
     @PatchMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Language patchLanguage(@PathVariable Short id, @RequestBody Map<String, Object> updates) {
+    public LanguageResponse patchLanguage(@PathVariable Short id, @RequestBody Map<String, Object> updates) {
         return languageService.patchLanguage(id, updates);
     }
 

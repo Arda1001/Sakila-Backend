@@ -21,29 +21,33 @@ public class LanguageService {
         this.languageRepository = languageRepository;
     }
 
-    public List<Language> readAllLanguages() {
-        return languageRepository.findAll();
+    public List<LanguageResponse> readAllLanguages() {
+        return languageRepository.findAll()
+                .stream()
+                .map(LanguageResponse::new)
+                .toList();
     }
 
-    public Language readlanguageById(Short id) {
-        return languageRepository.findById(id)
+    public LanguageResponse readLanguageById(Short id) {
+        Language language = languageRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException(LANGUAGE_NOT_FOUND + id));
+        return new LanguageResponse(language);
     }
 
-    public Language createLanguage(LanguageInput data) {
+    public LanguageResponse createLanguage(LanguageInput data) {
         Language language = new Language();
         language.setName(data.getName());
-        return languageRepository.save(language);
+        return new LanguageResponse(languageRepository.save(language));
     }
 
-    public Language updateLanguage(Short id, LanguageInput updatedLanguageInput) {
+    public LanguageResponse updateLanguage(Short id, LanguageInput updatedLanguageInput) {
         Language language = languageRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException(LANGUAGE_NOT_FOUND + id));
         language.setName(updatedLanguageInput.getName());
-        return languageRepository.save(language);
+        return new LanguageResponse(languageRepository.save(language));
     }
 
-    public Language patchLanguage(Short id, Map<String, Object> updates) {
+    public LanguageResponse patchLanguage(Short id, Map<String, Object> updates) {
 
         Language language = languageRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException(LANGUAGE_NOT_FOUND + id));
@@ -57,7 +61,7 @@ public class LanguageService {
             }
         });
 
-        return languageRepository.save(language);
+        return new LanguageResponse(languageRepository.save(language));
     }
 
     public void deleteLanguage(Short id) {
