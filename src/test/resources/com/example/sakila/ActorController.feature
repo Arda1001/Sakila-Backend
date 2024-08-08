@@ -1,5 +1,10 @@
 Feature: ActorController
 
+  Scenario: Actors are read
+    Given actors exist
+    When a GET request is made for all actors
+    Then a list of ActorResponses is returned
+
   Scenario: An actor is read by ID
     Given an actor exists with ID 42
     When a GET request is made for an actor with ID 42

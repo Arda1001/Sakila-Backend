@@ -7,6 +7,8 @@ import io.cucumber.java.en.When;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 import static com.example.sakila.CommonStepDefs.caughtException;
+
+import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
@@ -23,11 +25,26 @@ public class FilmControllerStepDefs {
     FilmInput filmInput = new FilmInput();
     FilmInput invalidFilmInput = new FilmInput();
     Map<String, Object> validFilmUpdates = Map.of("title", "New Title");
+    List<FilmResponse> actualOutputList;
 
     FilmResponse actualOutput;
     PartialFilmResponse actualOutputPartial;
     short currentFilmid;
 
+
+    @Given("films exists")
+    public void filmsExist() {
+        Film film1 = new Film();
+        Film film2 = new Film();
+        film1.setTitle("Film 1");
+        film2.setTitle("Film 2");
+
+        FilmResponse filmResponse1 = new FilmResponse(film1);
+        FilmResponse filmResponse2 = new FilmResponse(film2);
+
+        actualOutputList = List.of(filmResponse1, filmResponse2);
+        doReturn(actualOutputList).when(mockService).readAllFilms();
+    }
 
     @Given("a film exists with ID {short}")
     public void aFilmExistsWithID(short filmId) {
@@ -60,6 +77,16 @@ public class FilmControllerStepDefs {
         doThrow( new ResponseStatusException(HttpStatus.BAD_REQUEST)).when(mockService).createFilm(filmInput);
         doThrow( new ResponseStatusException(HttpStatus.BAD_REQUEST)).when(mockService).updateFilm(currentFilmid, filmInput);
         doThrow( new ResponseStatusException(HttpStatus.BAD_REQUEST)).when(mockService).patchFilm(eq(currentFilmid), any());
+    }
+
+    @When("a GET request is made for all films")
+    public void aGETRequestIsMadeForAllFilms() {
+        try {
+            actualOutputList = partialFilmResponseController.readAllFilms();
+        }
+        catch (Exception e) {
+            caughtException = e;
+        }
     }
 
     @When("a GET request is made for a film with ID {short}")
@@ -116,6 +143,13 @@ public class FilmControllerStepDefs {
     public void aFilmResponseIsReturned() {
         assertNotNull(actualOutput);
         assertInstanceOf(FilmResponse.class, actualOutput);
+    }
+
+    @Then("a list of FilmResponses is returned")
+    public void aListOfFilmResponsesIsReturned() {
+        assertNotNull(actualOutputList);
+        assertInstanceOf(List.class, actualOutputList);
+        actualOutputList.forEach(filmResponse -> assertInstanceOf(FilmResponse.class, filmResponse));
     }
 
     @Then("a PartialFilmResponse is returned")

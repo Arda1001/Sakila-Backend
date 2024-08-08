@@ -115,6 +115,8 @@
 						<exclude>**/*Response.*</exclude>
 						<exclude>**/ValidationGroup.*</exclude>
 						<exclude>**/*Converter.*</exclude>
+						<exclude>**/Rating.*</exclude>
+						<exclude>**/SpecialFeatures.*</exclude>
 					</excludes>
 				</configuration>
 				<executions>

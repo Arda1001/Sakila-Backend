@@ -1,5 +1,10 @@
 Feature: FilmController
 
+  Scenario: Films are read
+    Given films exists
+    When a GET request is made for all films
+    Then a list of FilmResponses is returned
+
   Scenario: A film is read by ID
     Given a film exists with ID 42
     When a GET request is made for a film with ID 42

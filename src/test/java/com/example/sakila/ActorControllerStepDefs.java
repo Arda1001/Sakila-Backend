@@ -28,6 +28,22 @@ public class ActorControllerStepDefs {
      List<ActorResponse> actualOutputList;
      short currentActorId;
 
+    @Given("actors exist")
+    public void actorsExist() {
+        Actor actor1 = new Actor();
+        Actor actor2 = new Actor();
+        actor1.setFirstName("JOHN");
+        actor1.setLastName("DOE");
+        actor2.setFirstName("JANE");
+        actor2.setLastName("DOE");
+
+        ActorResponse actorResponse1 = new ActorResponse(actor1);
+        ActorResponse actorResponse2 = new ActorResponse(actor2);
+
+        actualOutputList = List.of(actorResponse1, actorResponse2);
+        doReturn(actualOutputList).when(mockService).readAllActors();
+    }
+
     @Given("an actor exists with ID {short}")
     public void anActorExistsWithID(short actorId) {
         Actor actor = new Actor();
@@ -60,6 +76,16 @@ public class ActorControllerStepDefs {
         doThrow( new ResponseStatusException(HttpStatus.BAD_REQUEST)).when(mockService).createActor(actorInput);
         doThrow( new ResponseStatusException(HttpStatus.BAD_REQUEST)).when(mockService).updateActor(actorInput, currentActorId);
         doThrow( new ResponseStatusException(HttpStatus.BAD_REQUEST)).when(mockService).patchActor(eq(currentActorId), any());
+    }
+
+    @When("a GET request is made for all actors")
+    public void aGETRequestIsMadeForAllActors() {
+        try {
+            actualOutputList = responseController.readAllActors();
+        }
+        catch (Exception ex) {
+            caughtException = ex;
+        }
     }
 
     @When("a GET request is made for an actor with ID {short}")
@@ -112,6 +138,13 @@ public class ActorControllerStepDefs {
         }
     }
 
+    @Then("a list of ActorResponses is returned")
+    public void aListOfActorResponsesIsReturned() {
+        assertNotNull(actualOutputList);
+        assertInstanceOf(List.class, actualOutputList);
+        actualOutputList.forEach(actorResponse -> assertInstanceOf(ActorResponse.class, actorResponse));
+    }
+
     @Then("an ActorResponse is returned")
     public void aActorResponseIsReturned() {
         assertNotNull(actualOutput);
@@ -128,5 +161,4 @@ public class ActorControllerStepDefs {
     public void theActorIsDeleted() {
         verify(mockService, times(1)).deleteActor(anyShort());
     }
-
 }
