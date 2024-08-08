@@ -109,11 +109,12 @@
 						<exclude>**/Actor.*</exclude>
 						<exclude>**/Film.*</exclude>
 						<exclude>**/Language.*</exclude>
-						<exclude>**/Repository.*</exclude>
+						<exclude>**/*Repository.*</exclude>
 						<exclude>**/SakilaApplication.*</exclude>
-						<exclude>**/Input.*</exclude>
-						<exclude>**/Response.*</exclude>
+						<exclude>**/*Input.*</exclude>
+						<exclude>**/*Response.*</exclude>
 						<exclude>**/ValidationGroup.*</exclude>
+						<exclude>**/*Converter.*</exclude>
 					</excludes>
 				</configuration>
 				<executions>
