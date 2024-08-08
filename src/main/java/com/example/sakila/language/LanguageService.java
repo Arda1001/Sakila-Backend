@@ -14,8 +14,12 @@ public class LanguageService {
 
     private static final String LANGUAGE_NOT_FOUND = "Language not found with id: ";
 
+    private final LanguageRepository languageRepository;
+
     @Autowired
-    private LanguageRepository languageRepository;
+    public LanguageService(LanguageRepository languageRepository) {
+        this.languageRepository = languageRepository;
+    }
 
     public List<Language> readAllLanguages() {
         return languageRepository.findAll();

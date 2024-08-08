@@ -13,9 +13,12 @@ import java.util.Map;
 @Service
 @Transactional
 public class ActorService {
+    private final ActorRepository actorRepository;
 
     @Autowired
-    private ActorRepository actorRepository;
+    public ActorService(ActorRepository actorRepository) {
+        this.actorRepository = actorRepository;
+    }
 
     public List<ActorResponse> readAllActors() {
         return actorRepository.findAll()

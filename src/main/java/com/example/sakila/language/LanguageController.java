@@ -12,8 +12,12 @@ import java.util.Map;
 @RequestMapping("/languages")
 public class LanguageController {
 
+    private final LanguageService languageService;
+
     @Autowired
-    private LanguageService languageService;
+    public LanguageController(LanguageService languageService) {
+        this.languageService = languageService;
+    }
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)

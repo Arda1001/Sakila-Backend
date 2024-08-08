@@ -33,14 +33,16 @@ public class FilmService {
     private static final String FILM_NOT_FOUND = "Film not found with id: ";
     private static final String SPECIAL_FEATURES = "specialFeatures";
 
-    @Autowired
-    private FilmRepository filmRepository;
+    private final FilmRepository filmRepository;
+    private final LanguageRepository languageRepository;
+    private final ActorRepository actorRepository;
 
     @Autowired
-    private LanguageRepository languageRepository;
-
-    @Autowired
-    private ActorRepository actorRepository;
+    public FilmService(FilmRepository filmRepository, LanguageRepository languageRepository, ActorRepository actorRepository) {
+        this.filmRepository = filmRepository;
+        this.languageRepository = languageRepository;
+        this.actorRepository = actorRepository;
+    }
 
     private FilmInput data;
 
