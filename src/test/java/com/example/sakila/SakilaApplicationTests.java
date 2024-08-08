@@ -36,7 +36,7 @@ class SakilaApplicationTests {
 
 
 	@Test
-	public void shouldGiveActorDetailsWhenYouGetActorById() {
+	 void shouldGiveActorDetailsWhenYouGetActorById() {
 		final var expectedId = (short) 1;
 		final var expectedFirstName = "ARDA";
 		final var expectedLastName = "ORDU";
@@ -49,7 +49,7 @@ class SakilaApplicationTests {
 	}
 
 	@Test
-	public void actorResponseControllerReadActorByIdThrows404WhenInvalidId() {
+	 void actorResponseControllerReadActorByIdThrows404WhenInvalidId() {
 		Exception exception = null;
 
 		try {
@@ -65,7 +65,7 @@ class SakilaApplicationTests {
 	}
 
 	@Test
-	public void shouldCreateActorSuccessfully() {
+	 void shouldCreateActorSuccessfully() {
 
 		final var actorInput = new ActorInput();
 		final var expectedActor = new Actor((short) 1, "JOHN", "DOE", Set.of());
@@ -82,7 +82,7 @@ class SakilaApplicationTests {
 	}
 
 	@Test
-	public void shouldUpdateActorSuccessfully() {
+	 void shouldUpdateActorSuccessfully() {
 
 		final var actorInput = new ActorInput();
 		actorInput.setFirstName("JANE");
@@ -102,7 +102,7 @@ class SakilaApplicationTests {
 	}
 
 	@Test
-	public void actorResponseControllerUpdateActorByIdThrows404WhenInvalidId() {
+	 void actorResponseControllerUpdateActorByIdThrows404WhenInvalidId() {
 		doThrow(new RuntimeException("Actor not found with id: 2")).when(mockService).updateActor(any(ActorInput.class), eq((short) 2));
 		Exception exception = null;
 

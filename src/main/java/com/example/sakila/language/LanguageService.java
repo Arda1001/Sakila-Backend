@@ -12,6 +12,8 @@ import java.util.Map;
 @Transactional
 public class LanguageService {
 
+    private static final String LANGUAGE_NOT_FOUND = "Language not found with id: ";
+
     @Autowired
     private LanguageRepository languageRepository;
 
@@ -21,7 +23,7 @@ public class LanguageService {
 
     public Language readlanguageById(Short id) {
         return languageRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Language not found with id: " + id));
+                .orElseThrow(() -> new RuntimeException(LANGUAGE_NOT_FOUND + id));
     }
 
     public Language createLanguage(LanguageInput data) {
@@ -32,7 +34,7 @@ public class LanguageService {
 
     public Language updateLanguage(Short id, LanguageInput updatedLanguageInput) {
         Language language = languageRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Language not found with id: " + id));
+                .orElseThrow(() -> new RuntimeException(LANGUAGE_NOT_FOUND + id));
         language.setName(updatedLanguageInput.getName());
         return languageRepository.save(language);
     }
@@ -40,7 +42,7 @@ public class LanguageService {
     public Language patchLanguage(Short id, Map<String, Object> updates) {
 
         Language language = languageRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Language not found with id: " + id));
+                .orElseThrow(() -> new RuntimeException(LANGUAGE_NOT_FOUND + id));
 
         updates.forEach((key, value) -> {
             if (key.equals("name")) {

@@ -18,8 +18,8 @@ import static org.mockito.Mockito.*;
 public class FilmControllerStepDefs {
 
     FilmService mockService = mock(FilmService.class);
-    FilmController controller  = new FilmController(mockService);;
-    PartialFilmResponseController partialFilmResponseController = new PartialFilmResponseController(mockService);;
+    FilmController controller  = new FilmController(mockService);
+    PartialFilmResponseController partialFilmResponseController = new PartialFilmResponseController(mockService);
     FilmInput filmInput = new FilmInput();
     FilmInput invalidFilmInput = new FilmInput();
     Map<String, Object> validFilmUpdates = Map.of("title", "New Title");

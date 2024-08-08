@@ -24,6 +24,15 @@ import java.util.stream.Collectors;
 @Transactional
 public class FilmService {
 
+    private static final String LANGUAGE_ID = "languageId";
+    private static final String ORIGINAL_LANGUAGE_ID = "originalLanguageId";
+    private static final String ID = "id";
+    private static final String LANGUAGE_NOT_FOUND = "Language not found with id: ";
+    private static final String ORIGINAL_LANGUAGE_NOT_FOUND = "Original language not found with id: ";
+    private static final String ACTOR_NOT_FOUND = "Actor not found with id: ";
+    private static final String FILM_NOT_FOUND = "Film not found with id: ";
+    private static final String SPECIAL_FEATURES = "specialFeatures";
+
     @Autowired
     private FilmRepository filmRepository;
 
@@ -50,17 +59,17 @@ public class FilmService {
 
     public PartialFilmResponse createFilm(FilmInput data) {
         Film film = new Film();
-        BeanUtils.copyProperties(data, film, "languageId", "originalLanguageId");
+        BeanUtils.copyProperties(data, film, LANGUAGE_ID, ORIGINAL_LANGUAGE_ID);
 
         if (data.getLanguageId() != null) {
             Language language = languageRepository.findById(data.getLanguageId())
-                    .orElseThrow(() -> new RuntimeException("Language not found with id: " + data.getLanguageId()));
+                    .orElseThrow(() -> new RuntimeException(LANGUAGE_NOT_FOUND + data.getLanguageId()));
             film.setLanguageId(language);
         }
 
         if (data.getOriginalLanguageId() != null) {
             Language originalLanguage = languageRepository.findById(data.getOriginalLanguageId())
-                    .orElseThrow(() -> new RuntimeException("Original language not found with id: " + data.getOriginalLanguageId()));
+                    .orElseThrow(() -> new RuntimeException(ORIGINAL_LANGUAGE_NOT_FOUND + data.getOriginalLanguageId()));
             film.setOriginalLanguageId(originalLanguage);
         }
 
@@ -69,7 +78,7 @@ public class FilmService {
         if (data.getCastIds() != null && !data.getCastIds().isEmpty()) {
             Set<Actor> cast = data.getCastIds().stream()
                     .map(id -> actorRepository.findById(id)
-                            .orElseThrow(() -> new RuntimeException("Actor not found with id: " + id)))
+                            .orElseThrow(() -> new RuntimeException(ACTOR_NOT_FOUND + id)))
                     .collect(Collectors.toSet());
             film.setCast(cast);
         }
@@ -79,19 +88,19 @@ public class FilmService {
 
     public PartialFilmResponse updateFilm(Short id, FilmInput updatedFilmInput) {
         Film film = filmRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Film not found with id: " + id));
+                .orElseThrow(() -> new RuntimeException(FILM_NOT_FOUND + id));
 
-        BeanUtils.copyProperties(updatedFilmInput, film, "id", "languageId", "originalLanguageId");
+        BeanUtils.copyProperties(updatedFilmInput, film, ID, LANGUAGE_ID, ORIGINAL_LANGUAGE_ID);
 
         if (updatedFilmInput.getLanguageId() != null) {
             Language language = languageRepository.findById(updatedFilmInput.getLanguageId())
-                    .orElseThrow(() -> new RuntimeException("Language not found with id: " + updatedFilmInput.getLanguageId()));
+                    .orElseThrow(() -> new RuntimeException(LANGUAGE_NOT_FOUND + updatedFilmInput.getLanguageId()));
             film.setLanguageId(language);
         }
 
         if (updatedFilmInput.getOriginalLanguageId() != null) {
             Language originalLanguage = languageRepository.findById(updatedFilmInput.getOriginalLanguageId())
-                    .orElseThrow(() -> new RuntimeException("Original language not found with id: " + updatedFilmInput.getOriginalLanguageId()));
+                    .orElseThrow(() -> new RuntimeException(ORIGINAL_LANGUAGE_NOT_FOUND + updatedFilmInput.getOriginalLanguageId()));
             film.setOriginalLanguageId(originalLanguage);
         }
         else {
@@ -105,20 +114,20 @@ public class FilmService {
 
     public PartialFilmResponse patchFilm(Short id, Map<String, Object> updates) {
         Film film = filmRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Film not found with id: " + id));
+                .orElseThrow(() -> new RuntimeException(FILM_NOT_FOUND + id));
 
         BeanWrapper beanWrapper = new BeanWrapperImpl(film);
         updates.forEach((key, value) -> {
             switch (key) {
-                case "languageId":
+                case LANGUAGE_ID:
                     Optional<Language> language = languageRepository.findById(((Number) value).shortValue());
                     language.ifPresent(film::setLanguageId);
                     break;
-                case "originalLanguageId":
+                case ORIGINAL_LANGUAGE_ID:
                     Optional<Language> originalLanguage = languageRepository.findById(((Number) value).shortValue());
                     originalLanguage.ifPresent(film::setOriginalLanguageId);
                     break;
-                case "specialFeatures":
+                case SPECIAL_FEATURES:
                     Set<SpecialFeatures> specialFeatures = ((List<String>) value).stream()
                             .map(SpecialFeatures::valueOf)
                             .collect(Collectors.toSet());
