@@ -1,5 +1,6 @@
 package com.example.sakila;
 
+import com.example.sakila.actor.PartialActorResponse;
 import com.example.sakila.film.*;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
@@ -9,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -22,14 +24,16 @@ public class FilmControllerStepDefs {
     FilmService mockService;
     FilmController controller;
     PartialFilmResponseController partialFilmResponseController;
+
     FilmResponse actualOutput;
     PartialFilmResponse actualOutputPartial;
     FilmInput filmInput;
-    List<FilmResponse> filmResponses;
+    List<FilmResponse> actualOutputList;
     Exception caughtException;
     short currentFilmid;
-    FilmInput invalidFilmInput;
 
+    FilmInput invalidFilmInput;
+    Map<String, Object> validFilmUpdates;
 
     @Before
     public void setup() {
@@ -38,6 +42,7 @@ public class FilmControllerStepDefs {
         partialFilmResponseController = new PartialFilmResponseController(mockService);
         filmInput = new FilmInput();
         invalidFilmInput = new FilmInput();
+        validFilmUpdates = Map.of("title", "New Title");
     }
 
     @Given("a film exists with ID {short}")
@@ -59,10 +64,18 @@ public class FilmControllerStepDefs {
 
     @Given("a valid FilmInput request body")
     public void aValidFilmInputRequestBody() {
+        filmInput.setTitle("Film Title");
+        doReturn( new PartialFilmResponse(new Film())).when(mockService).createFilm(filmInput);
+        doReturn( new PartialFilmResponse(new Film())).when(mockService).updateFilm(currentFilmid, filmInput);
+        doReturn( new PartialFilmResponse(new Film())).when(mockService).patchFilm(currentFilmid, validFilmUpdates);
     }
 
     @Given("an invalid FilmInput request body")
     public void anInvalidFilmInputRequestBody() {
+        filmInput = invalidFilmInput;
+        doThrow( new ResponseStatusException(HttpStatus.BAD_REQUEST)).when(mockService).createFilm(filmInput);
+        doThrow( new ResponseStatusException(HttpStatus.BAD_REQUEST)).when(mockService).updateFilm(currentFilmid, filmInput);
+        doThrow( new ResponseStatusException(HttpStatus.BAD_REQUEST)).when(mockService).patchFilm(eq(currentFilmid), any());
     }
 
     @When("a GET request is made for a film with ID {short}")
@@ -77,19 +90,42 @@ public class FilmControllerStepDefs {
 
     @When("a POST request is made to the films collection")
     public void aPOSTRequestIsMadeToTheFilmsCollection() {
-
+        try {
+            actualOutputPartial = controller.createFilm(filmInput);
+        }
+        catch (Exception e) {
+            caughtException = e;
+        }
     }
 
     @When("a PUT request is made for a film with ID {short}")
     public void aPUTRequestIsMadeForAFilmWithID(short filmId) {
+        try {
+            actualOutputPartial = controller.updateFilm(filmId, filmInput);
+        }
+        catch (Exception e) {
+            caughtException = e;
+        }
     }
 
     @When("a PATCH request is made for a film with ID {short}")
     public void aPATCHRequestIsMadeForAFilmWithID(short filmId) {
+        try {
+            actualOutputPartial = controller.patchFilm(filmId, validFilmUpdates);
+        }
+        catch (Exception e) {
+            caughtException = e;
+        }
     }
 
     @When("a DELETE request is made for a film with ID {short}")
     public void aDELETERequestIsMadeForAFilmWithID(short filmId) {
+        try {
+            controller.deleteFilm(filmId);
+        }
+        catch (Exception e) {
+            caughtException = e;
+        }
     }
 
     @Then("a FilmResponse is returned")

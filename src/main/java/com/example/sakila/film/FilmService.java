@@ -48,7 +48,7 @@ public class FilmService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
-    public Film createFilm(FilmInput data) {
+    public PartialFilmResponse createFilm(FilmInput data) {
         Film film = new Film();
         BeanUtils.copyProperties(data, film, "languageId", "originalLanguageId");
 
@@ -74,10 +74,10 @@ public class FilmService {
             film.setCast(cast);
         }
 
-        return filmRepository.save(film);
+        return new PartialFilmResponse(filmRepository.save(film));
     }
 
-    public Film updateFilm(Short id, FilmInput updatedFilmInput) {
+    public PartialFilmResponse updateFilm(Short id, FilmInput updatedFilmInput) {
         Film film = filmRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Film not found with id: " + id));
 
@@ -100,10 +100,10 @@ public class FilmService {
 
         film.setSpecialFeatures(updatedFilmInput.getSpecialFeatures());
 
-        return filmRepository.save(film);
+        return new PartialFilmResponse(filmRepository.save(film));
     }
 
-    public Film patchFilm(Short id, Map<String, Object> updates) {
+    public PartialFilmResponse patchFilm(Short id, Map<String, Object> updates) {
         Film film = filmRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Film not found with id: " + id));
 
@@ -135,7 +135,7 @@ public class FilmService {
             }
         });
 
-        return filmRepository.save(film);
+        return new PartialFilmResponse(filmRepository.save(film));
     }
 
     public void deleteFilm(Short id) {

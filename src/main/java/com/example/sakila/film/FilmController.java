@@ -21,23 +21,20 @@ public class FilmController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public FilmResponse createFilm(@Validated(ValidationGroup.Create.class) @RequestBody FilmInput data) {
-        final var film = filmService.createFilm(data);
-        return new FilmResponse(film);
+    public PartialFilmResponse createFilm(@Validated(ValidationGroup.Create.class) @RequestBody FilmInput data) {
+        return filmService.createFilm(data);
     }
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public FilmResponse updateFilm(@Validated(ValidationGroup.Update.class)@PathVariable Short id, @RequestBody FilmInput updatedFilmInput) {
-        final var film = filmService.updateFilm(id, updatedFilmInput);
-        return new FilmResponse(film);
+    public PartialFilmResponse updateFilm(@Validated(ValidationGroup.Update.class)@PathVariable Short id, @RequestBody FilmInput updatedFilmInput) {
+        return filmService.updateFilm(id, updatedFilmInput);
     }
 
     @PatchMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public FilmResponse patchFilm(@Validated(ValidationGroup.Update.class)@PathVariable Short id, @RequestBody Map<String, Object> updates) {
-        final var film = filmService.patchFilm(id, updates);
-        return new FilmResponse(film);
+    public PartialFilmResponse patchFilm(@Validated(ValidationGroup.Update.class)@PathVariable Short id, @RequestBody Map<String, Object> updates) {
+        return filmService.patchFilm(id, updates);
     }
 
     @DeleteMapping("/{id}")
