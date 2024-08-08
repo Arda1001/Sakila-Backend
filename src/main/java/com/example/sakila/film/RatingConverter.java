@@ -11,7 +11,6 @@ public class RatingConverter implements AttributeConverter<Rating, String> {
         return switch (rating) {
             case PG_13 -> "PG-13";
             case NC_17 -> "NC-17";
-            default -> rating.name();
         };
     }
 

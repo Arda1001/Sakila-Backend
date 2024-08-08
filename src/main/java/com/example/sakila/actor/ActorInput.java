@@ -3,10 +3,7 @@ package com.example.sakila.actor;
 import com.example.sakila.ValidationGroup;
 import com.example.sakila.film.Film;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import lombok.Data;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 
 import java.util.Set;
 

@@ -12,7 +12,6 @@ public enum SpecialFeatures {
     //private final String displayName;
 
     SpecialFeatures(String displayName) {
-        //this.displayName = displayName;
     }
 
 }

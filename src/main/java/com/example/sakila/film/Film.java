@@ -2,7 +2,6 @@ package com.example.sakila.film;
 
 import com.example.sakila.actor.Actor;
 import com.example.sakila.language.Language;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
