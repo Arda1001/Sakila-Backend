@@ -9,7 +9,10 @@ public class RatingConverter implements AttributeConverter<Rating, String> {
     @Override
     public String convertToDatabaseColumn(Rating rating) {
         return switch (rating) {
+            case G -> null;
+            case PG -> null;
             case PG_13 -> "PG-13";
+            case R -> null;
             case NC_17 -> "NC-17";
         };
     }
