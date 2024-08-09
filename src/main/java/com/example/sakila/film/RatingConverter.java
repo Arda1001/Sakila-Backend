@@ -9,11 +9,11 @@ public class RatingConverter implements AttributeConverter<Rating, String> {
     @Override
     public String convertToDatabaseColumn(Rating rating) {
         return switch (rating) {
-            case G -> null;
-            case PG -> null;
             case PG_13 -> "PG-13";
-            case R -> null;
             case NC_17 -> "NC-17";
+            case G -> "G";
+            case PG -> "PG";
+            case R -> "R";
         };
     }
 
@@ -22,6 +22,9 @@ public class RatingConverter implements AttributeConverter<Rating, String> {
         return switch (input) {
             case "PG-13" -> Rating.PG_13;
             case "NC-17" -> Rating.NC_17;
+            case "G" -> Rating.G;
+            case "PG" -> Rating.PG;
+            case "R" -> Rating.R;
             default -> Rating.valueOf(input);
         };
     }
