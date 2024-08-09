@@ -36,25 +36,35 @@ public class LanguageServiceStepDefs {
         doReturn(languageList).when(mockRepository).findAll();
     }
 
-    @When("the service retrieves all languages")
-    public void theServiceRetrievesAllLanguages() {
-        LanguageService service = new LanguageService(mockRepository);
-        actualOutputList = service.readAllLanguages();
-    }
-
-    @And("the service returns a list of LanguageResponse")
-    public void theServiceReturnsAListOfLanguageResponse() {
-        assertNotNull(actualOutputList);
-        assertInstanceOf(List.class, actualOutputList);
-        actualOutputList.forEach(languageResponse -> assertInstanceOf(LanguageResponse.class, languageResponse));
-    }
-
     @Given("the database contains a language with ID {short}")
     public void theDatabaseContainsALanguageWithID(short langugageId) {
         Language language = new Language();
         language.setName("English");
 
         doReturn(java.util.Optional.of(language)).when(mockRepository).findById(langugageId);
+    }
+
+    @Given("the database does not contain a language with ID {short}")
+    public void theDatabaseDoesNotContainALanguageWithID(short languageId) {
+        doReturn(java.util.Optional.empty()).when(mockRepository).findById(languageId);
+    }
+
+    @Given("the service receives a valid LanguageInput")
+    public void theServiceReceivesAValidLanguageInputRequestBody() {
+        languageInput.setName("German");
+        doReturn(new Language()).when(mockRepository).save(any());
+    }
+
+    @Given("the service receives an invalid LanguageInput")
+    public void theServiceReceivesAnInvalidLanguageInputRequestBody() {
+        languageInput = invalidLanguageInput;
+        doThrow(new RuntimeException()).when(mockRepository).save(new Language());
+    }
+
+    @When("the service retrieves all languages")
+    public void theServiceRetrievesAllLanguages() {
+        LanguageService service = new LanguageService(mockRepository);
+        actualOutputList = service.readAllLanguages();
     }
 
     @When("the service retrieves a language with ID {short}")
@@ -68,29 +78,6 @@ public class LanguageServiceStepDefs {
         }
     }
 
-    @And("the service returns a LanguageResponse")
-    public void theServiceReturnsALanguageResponse() {
-        assertNotNull(actualOutput);
-        assertInstanceOf(LanguageResponse.class, actualOutput);
-    }
-
-    @Given("the database does not contain a language with ID {short}")
-    public void theDatabaseDoesNotContainALanguageWithID(short languageId) {
-        doReturn(java.util.Optional.empty()).when(mockRepository).findById(languageId);
-    }
-
-    @Then("a RunTimeException is thrown")
-    public void aRunTimeExceptionIsThrown(){
-        assertNotNull(caughtException);
-        assertInstanceOf(RuntimeException.class, caughtException);
-    }
-
-    @Given("the service receives a valid LanguageInput")
-    public void theServiceReceivesAValidLanguageInputRequestBody() {
-        languageInput.setName("German");
-        doReturn(new Language()).when(mockRepository).save(any());
-    }
-
     @When("the service creates a language")
     public void theServiceCreatesALanguage() {
         try {
@@ -98,15 +85,8 @@ public class LanguageServiceStepDefs {
             actualOutput = service.createLanguage(languageInput);
         }
         catch (Exception e) {
-            e.printStackTrace();
             caughtException = e;
         }
-    }
-
-    @Given("the service receives an invalid LanguageInput")
-    public void theServiceReceivesAnInvalidLanguageInputRequestBody() {
-        languageInput = invalidLanguageInput;
-        doThrow(new RuntimeException()).when(mockRepository).save(new Language());
     }
 
     @When("the service updates a language with ID {short}")
@@ -141,6 +121,25 @@ public class LanguageServiceStepDefs {
         catch (Exception e) {
             caughtException = e;
         }
+    }
+
+    @Then("a RunTimeException is thrown")
+    public void aRunTimeExceptionIsThrown(){
+        assertNotNull(caughtException);
+        assertInstanceOf(RuntimeException.class, caughtException);
+    }
+
+    @And("the service returns a list of LanguageResponse")
+    public void theServiceReturnsAListOfLanguageResponse() {
+        assertNotNull(actualOutputList);
+        assertInstanceOf(List.class, actualOutputList);
+        actualOutputList.forEach(languageResponse -> assertInstanceOf(LanguageResponse.class, languageResponse));
+    }
+
+    @And("the service returns a LanguageResponse")
+    public void theServiceReturnsALanguageResponse() {
+        assertNotNull(actualOutput);
+        assertInstanceOf(LanguageResponse.class, actualOutput);
     }
 
     @And("the service deletes the language")
