@@ -19,6 +19,9 @@ public class RatingConverter implements AttributeConverter<Rating, String> {
 
     @Override
     public Rating convertToEntityAttribute(String input) {
+        if (input == null) {
+            return null;
+        }
         return switch (input) {
             case "PG-13" -> Rating.PG_13;
             case "NC-17" -> Rating.NC_17;
@@ -28,5 +31,6 @@ public class RatingConverter implements AttributeConverter<Rating, String> {
             default -> Rating.valueOf(input);
         };
     }
+
 }
 
