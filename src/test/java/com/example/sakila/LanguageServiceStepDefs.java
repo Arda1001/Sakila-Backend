@@ -3,7 +3,6 @@ package com.example.sakila;
 import com.example.sakila.language.*;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
-import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import static com.example.sakila.CommonStepDefs.caughtException;
 
@@ -121,12 +120,6 @@ public class LanguageServiceStepDefs {
         catch (Exception e) {
             caughtException = e;
         }
-    }
-
-    @Then("a RunTimeException is thrown")
-    public void aRunTimeExceptionIsThrown(){
-        assertNotNull(caughtException);
-        assertInstanceOf(RuntimeException.class, caughtException);
     }
 
     @And("the service returns a list of LanguageResponse")

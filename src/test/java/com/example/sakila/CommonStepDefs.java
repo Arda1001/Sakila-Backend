@@ -22,4 +22,10 @@ public class CommonStepDefs {
         assertEquals(statusCode, ((ResponseStatusException) caughtException).getStatusCode().value());
     }
 
+    @Then("a RunTimeException is thrown")
+    public void aRunTimeExceptionIsThrown(){
+        assertNotNull(caughtException);
+        assertInstanceOf(RuntimeException.class, caughtException);
+    }
+
 }
